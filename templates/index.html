@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Погода</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#getWeatherBtn').click(function () {
+                var country = $('#countryInput').val();
+                var city = $('#cityInput').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_weather',
+                    data: { 'country': country, 'city': city },
+                    success: function (data) {
+                        $('#weatherResult').html('Погода: ' + data.description + '<br>Температура: ' + data.temperature + 'K');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Погода</h1>
+    <div>
+        <label for="countryInput">Страна:</label>
+        <input type="text" id="countryInput" name="country">
+    </div>
+    <div>
+        <label for="cityInput">Город:</label>
+        <input type="text" id="cityInput" name="city">
+    </div>
+    <button id="getWeatherBtn">Получить погоду</button>
+    <div id="weatherResult"></div>
+</body>
+</html>
